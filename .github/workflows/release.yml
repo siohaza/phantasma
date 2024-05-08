@@ -1,0 +1,96 @@
+# https://github.com/svenstaro/miniserve/blob/master/.github/workflows/build-release.yml
+name: Build/publish release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Binary ${{ matrix.target }} (on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: armv7-unknown-linux-musleabihf
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: armv7-unknown-linux-gnueabihf
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: arm-unknown-linux-musleabihf
+            cargo_flags: ""
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            cargo_flags: ""
+          - os: windows-latest
+            target: i686-pc-windows-msvc
+            cargo_flags: ""
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            cargo_flags: ""
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            cargo_flags: ""
+          - os: ubuntu-latest
+            target: x86_64-unknown-freebsd
+            cargo_flags: ""
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - run: sudo apt install musl-tools
+        if: startsWith(matrix.os, 'ubuntu')
+
+      - name: cargo build
+        uses: houseabsolute/actions-rust-cross@v0
+        with:
+          command: build
+          args: --release ${{ matrix.cargo_flags }}
+          target: ${{ matrix.target }}
+
+      - name: Set exe extension for Windows
+        run: echo "EXE=.exe" >> $env:GITHUB_ENV
+        if: startsWith(matrix.os, 'windows')
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/phantasma${{ env.EXE }}
+
+      - name: Get version from tag
+        id: extract_version
+        run: |
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/${{ matrix.target }}/release/phantasma${{ env.EXE }}
+          tag: ${{ github.ref_name }}
+          asset_name: phantasma-${{ steps.extract_version.outputs.version }}-${{ matrix.target }}${{ env.EXE }}
+        if: startsWith(github.ref_name, 'v') && github.ref_type == 'tag'
