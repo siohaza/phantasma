@@ -1,0 +1,10 @@
+"MasterServers"
+{
+	"hl2"
+	{
+		"0"
+		{
+			"addr"		"phantasma.ikanaide.pw:27010"
+		}
+	}
+}
