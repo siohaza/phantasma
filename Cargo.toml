@@ -1,0 +1,24 @@
+[package]
+name = "phantasma"
+version = "0.1.0"
+license = "GPL-3.0"
+edition = "2021"
+
+[features]
+default = ["logtime"]
+logtime = ["chrono"]
+
+[dependencies]
+thiserror = "1"
+lexopt = "0.3.0"
+log = "0.4"
+bitflags = "2.5"
+fastrand = "2.1"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+
+[dependencies.chrono]
+version = "0.4"
+optional = true
+default-features = false
+features = ["clock"]
