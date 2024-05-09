@@ -94,3 +94,8 @@ jobs:
           tag: ${{ github.ref_name }}
           asset_name: phantasma-${{ steps.extract_version.outputs.version }}-${{ matrix.target }}${{ env.EXE }}
         if: startsWith(github.ref_name, 'v') && github.ref_type == 'tag'
+
+      - name: Release on crates.io
+        uses: katyo/publish-crates@v2
+        with:
+          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
