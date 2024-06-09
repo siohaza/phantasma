@@ -14,7 +14,7 @@ See [docs/usage.md](docs/usage.md).
 
 ## API
 
-Phantasma implements the Vavle's Master Server Query Protocol, documented here on [developer.valvesoftware.com](https://developer.valvesoftware.com/wiki/Master_Server_Query_Protocol).
+Phantasma implements the Valve's Master Server Query Protocol, documented here on [developer.valvesoftware.com](https://developer.valvesoftware.com/wiki/Master_Server_Query_Protocol).
 
 ## Building
 
