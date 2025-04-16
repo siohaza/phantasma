@@ -1,6 +1,6 @@
 [package]
 name = "phantasma"
-version = "0.1.0"
+version = "0.1.1"
 description = "Reimplementation of Valve's masterserver"
 authors = ["siohaza <siohaza@proton.me>"]
 repository = "https://github.com/siohaza/phantasma"
@@ -8,18 +8,18 @@ readme = "README.md"
 keywords = ["info", "udp-server", "source-engine", "masterserver", "server"]
 categories = ["command-line-utilities", "network-programming"]
 license = "GPL-3.0"
-edition = "2021"
+edition = "2024"
 
 [features]
 default = ["logtime"]
 logtime = ["chrono"]
 
 [dependencies]
-thiserror = "1"
-lexopt = "0.3.0"
+thiserror = "2"
+lexopt = "0.3.1"
 log = "0.4"
-bitflags = "2.5"
-fastrand = "2.1"
+bitflags = "2.9"
+fastrand = "2.3"
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
 
