@@ -1,6 +1,6 @@
 [package]
 name = "phantasma"
-version = "0.1.1"
+version = "0.1.2"
 description = "Reimplementation of Valve's masterserver"
 authors = ["siohaza <siohaza@proton.me>"]
 repository = "https://github.com/siohaza/phantasma"
