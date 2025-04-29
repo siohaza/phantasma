@@ -44,4 +44,4 @@ cargo test
 
 ## Credits
 
-[xash3d-master](https://git.mentality.rip/numas13/xash3d-master)
+[xash3d-master](https://github.com/FWGS/xash3d-master)
